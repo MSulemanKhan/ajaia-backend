@@ -1,31 +1,35 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 18, 22, 0.45);
+  background: rgba(20, 22, 30, 0.5);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  padding: 16px;
 }
 
 .dialog {
   width: 100%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  max-width: 440px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-lg);
 }
 
 .dialog-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 
   h2 {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 }
 
@@ -35,7 +39,19 @@
   font-size: 1.3rem;
   cursor: pointer;
   line-height: 1;
-  color: #666;
+  color: var(--color-text-muted);
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 120ms ease;
+
+  &:hover {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
 }
 
 .share-form {
@@ -47,19 +63,34 @@
 select {
   flex: 1;
   min-width: 140px;
-  padding: 8px 10px;
-  border: 1px solid #d7dbe0;
-  border-radius: 8px;
+  padding: 9px 11px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+  }
 }
 
 button.primary {
-  background: #2563eb;
+  background: var(--color-primary);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  padding: 9px 16px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.85rem;
+  transition: background-color 120ms ease;
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+  }
 
   &:disabled {
     opacity: 0.6;
@@ -68,25 +99,31 @@ button.primary {
 }
 
 .error {
-  color: #b91c1c;
+  color: var(--color-danger);
   font-size: 0.85rem;
-  margin: 10px 0 0;
+  margin: 12px 0 0;
+  background: var(--color-danger-soft);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
 }
 
 .hint {
-  color: #777;
+  color: var(--color-text-muted);
   font-size: 0.85rem;
 }
 
 .share-list {
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid #eee;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-border);
 
   h3 {
-    margin: 0 0 10px;
-    font-size: 0.85rem;
-    color: #444;
+    margin: 0 0 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-faint);
   }
 
   ul {
@@ -95,33 +132,45 @@ button.primary {
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
 
   li {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
+    gap: 10px;
+    font-size: 0.86rem;
 
     span:first-child {
       flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }
 
 .badge {
-  background: #eef2ff;
-  color: #3730a3;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-soft-text);
   border-radius: 999px;
-  padding: 2px 8px;
-  font-size: 0.75rem;
+  padding: 3px 10px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .link-btn {
   background: none;
   border: none;
-  color: #b91c1c;
+  color: var(--color-danger);
   cursor: pointer;
   font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+
+  &:hover {
+    background: var(--color-danger-soft);
+  }
 }

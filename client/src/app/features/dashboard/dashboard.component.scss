@@ -7,67 +7,77 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 32px;
-  background: #fff;
-  border-bottom: 1px solid #e2e5e9;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
 
   h1 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 }
 
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .user-chip {
-  font-size: 0.85rem;
-  color: #444;
-  background: #f0f2f5;
-  padding: 4px 10px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-primary-soft-text);
+  background: var(--color-primary-soft);
+  padding: 5px 12px;
   border-radius: 999px;
 }
 
 button.ghost {
-  background: none;
-  border: 1px solid #d7dbe0;
-  border-radius: 8px;
-  padding: 6px 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
   cursor: pointer;
   font-size: 0.85rem;
+  color: var(--color-text);
+  transition: background-color 120ms ease, border-color 120ms ease;
 
   &:hover {
-    background: #f4f5f7;
+    background: var(--color-bg);
+    border-color: var(--color-border-strong);
   }
 }
 
 .content {
-  max-width: 860px;
+  max-width: 880px;
   margin: 0 auto;
-  padding: 32px 24px 64px;
+  padding: 40px 24px 64px;
 }
 
 .actions {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 button.primary {
-  background: #2563eb;
+  background: var(--color-primary);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  padding: 11px 18px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: background-color 120ms ease, box-shadow 120ms ease;
 
   &:hover:not(:disabled) {
-    background: #1d4ed8;
+    background: var(--color-primary-hover);
+    box-shadow: var(--shadow-sm);
   }
 
   &:disabled {
@@ -77,35 +87,41 @@ button.primary {
 }
 
 .upload-btn {
-  border: 1px dashed #b7c0cc;
-  border-radius: 8px;
-  padding: 10px 16px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: 11px 18px;
   font-size: 0.9rem;
   cursor: pointer;
-  color: #444;
+  color: var(--color-text-muted);
+  transition: background-color 120ms ease, border-color 120ms ease;
 
   &:hover {
-    background: #f4f5f7;
+    background: var(--color-surface);
+    border-color: var(--color-primary);
+    color: var(--color-text);
   }
 }
 
 .hint {
-  color: #777;
+  color: var(--color-text-muted);
   font-size: 0.85rem;
 }
 
 .error {
-  color: #b91c1c;
+  color: var(--color-danger);
   font-size: 0.85rem;
 }
 
 section {
-  margin-top: 32px;
+  margin-top: 36px;
 
   h2 {
-    font-size: 1rem;
-    margin: 0 0 12px;
-    color: #333;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 14px;
+    color: var(--color-text-faint);
   }
 }
 
@@ -115,31 +131,61 @@ section {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .doc-card {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background: #fff;
-  border: 1px solid #e2e5e9;
-  border-radius: 10px;
-  padding: 14px 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
   text-decoration: none;
   color: inherit;
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
 
   &:hover {
-    border-color: #2563eb;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
   }
+}
+
+.doc-card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
 }
 
 .doc-title {
   font-weight: 600;
   font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .doc-meta {
   font-size: 0.78rem;
-  color: #777;
+  color: var(--color-text-muted);
+}
+
+.permission-badge {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-soft-text);
+  white-space: nowrap;
+
+  &.view-only {
+    background: #f1f2f4;
+    color: var(--color-text-muted);
+  }
 }

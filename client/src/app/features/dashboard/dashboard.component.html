@@ -44,8 +44,11 @@
             @for (doc of owned(); track doc.id) {
               <li>
                 <a [routerLink]="['/documents', doc.id]" class="doc-card">
-                  <span class="doc-title">{{ doc.title }}</span>
-                  <span class="doc-meta">Updated {{ doc.updatedAt | date: 'medium' }}</span>
+                  <span class="doc-card-main">
+                    <span class="doc-title">{{ doc.title }}</span>
+                    <span class="doc-meta">Updated {{ doc.updatedAt | date: 'medium' }}</span>
+                  </span>
+                  <span class="permission-badge">Owner</span>
                 </a>
               </li>
             }
@@ -62,9 +65,12 @@
             @for (doc of shared(); track doc.id) {
               <li>
                 <a [routerLink]="['/documents', doc.id]" class="doc-card">
-                  <span class="doc-title">{{ doc.title }}</span>
-                  <span class="doc-meta">
-                    Owned by {{ doc.ownerName }} &middot; {{ doc.accessLevel === 'edit' ? 'can edit' : 'view only' }}
+                  <span class="doc-card-main">
+                    <span class="doc-title">{{ doc.title }}</span>
+                    <span class="doc-meta">Owned by {{ doc.ownerName }}</span>
+                  </span>
+                  <span class="permission-badge" [class.view-only]="doc.accessLevel !== 'edit'">
+                    {{ doc.accessLevel === 'edit' ? 'Can edit' : 'View only' }}
                   </span>
                 </a>
               </li>
