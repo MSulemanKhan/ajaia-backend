@@ -1,0 +1,77 @@
+<div class="page">
+  <header class="topbar">
+    <h1>Ajaia Docs</h1>
+    <div class="topbar-right">
+      @if (currentUser(); as user) {
+        <span class="user-chip">{{ user.displayName }}</span>
+      }
+      <button type="button" class="ghost" (click)="logout()">Log out</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="actions">
+      <button type="button" class="primary" [disabled]="creating()" (click)="createDocument()">
+        + New document
+      </button>
+
+      <label class="upload-btn">
+        Upload .txt / .md
+        <input type="file" accept=".txt,.md" (change)="onFileSelected($event)" [disabled]="uploading()" hidden />
+      </label>
+
+      @if (uploading()) {
+        <span class="hint">Importing…</span>
+      }
+    </div>
+
+    @if (uploadError()) {
+      <p class="error">{{ uploadError() }}</p>
+    }
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    @if (loading()) {
+      <p class="hint">Loading your documents…</p>
+    } @else {
+      <section>
+        <h2>My documents</h2>
+        @if (owned().length === 0) {
+          <p class="hint">You haven't created any documents yet.</p>
+        } @else {
+          <ul class="doc-list">
+            @for (doc of owned(); track doc.id) {
+              <li>
+                <a [routerLink]="['/documents', doc.id]" class="doc-card">
+                  <span class="doc-title">{{ doc.title }}</span>
+                  <span class="doc-meta">Updated {{ doc.updatedAt | date: 'medium' }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <section>
+        <h2>Shared with me</h2>
+        @if (shared().length === 0) {
+          <p class="hint">No one has shared a document with you yet.</p>
+        } @else {
+          <ul class="doc-list">
+            @for (doc of shared(); track doc.id) {
+              <li>
+                <a [routerLink]="['/documents', doc.id]" class="doc-card">
+                  <span class="doc-title">{{ doc.title }}</span>
+                  <span class="doc-meta">
+                    Owned by {{ doc.ownerName }} &middot; {{ doc.accessLevel === 'edit' ? 'can edit' : 'view only' }}
+                  </span>
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+    }
+  </main>
+</div>

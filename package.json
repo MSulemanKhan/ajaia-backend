@@ -1,16 +1,34 @@
 {
   "name": "test-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-  "start": "node server.js"
-},
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "cd client && npm install && npm run build",
+    "test": "jest"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "marked": "^12.0.2",
+    "multer": "^2.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/client/"
+    ]
   }
 }

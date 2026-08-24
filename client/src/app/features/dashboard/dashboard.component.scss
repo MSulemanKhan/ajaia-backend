@@ -1,0 +1,145 @@
+.page {
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: #fff;
+  border-bottom: 1px solid #e2e5e9;
+
+  h1 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-chip {
+  font-size: 0.85rem;
+  color: #444;
+  background: #f0f2f5;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+button.ghost {
+  background: none;
+  border: 1px solid #d7dbe0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+
+  &:hover {
+    background: #f4f5f7;
+  }
+}
+
+.content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+button.primary {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #1d4ed8;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.upload-btn {
+  border: 1px dashed #b7c0cc;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #444;
+
+  &:hover {
+    background: #f4f5f7;
+  }
+}
+
+.hint {
+  color: #777;
+  font-size: 0.85rem;
+}
+
+.error {
+  color: #b91c1c;
+  font-size: 0.85rem;
+}
+
+section {
+  margin-top: 32px;
+
+  h2 {
+    font-size: 1rem;
+    margin: 0 0 12px;
+    color: #333;
+  }
+}
+
+.doc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #fff;
+  border: 1px solid #e2e5e9;
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    border-color: #2563eb;
+  }
+}
+
+.doc-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.doc-meta {
+  font-size: 0.78rem;
+  color: #777;
+}

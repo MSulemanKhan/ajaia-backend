@@ -1,0 +1,44 @@
+@if (loading()) {
+  <p class="hint centered">Loading…</p>
+} @else if (error()) {
+  <div class="error-page">
+    <p>{{ error() }}</p>
+    <button type="button" class="ghost" (click)="goBack()">Back to dashboard</button>
+  </div>
+} @else if (doc(); as document) {
+  <div class="editor-page" [formGroup]="form">
+    <header class="editor-topbar">
+      <button type="button" class="ghost" (click)="goBack()">&larr; Back</button>
+      <input type="text" formControlName="title" class="title-input" placeholder="Untitled document" />
+      <div class="topbar-right">
+        <span class="save-state">
+          @switch (saveState()) {
+            @case ('saving') { Saving… }
+            @case ('saved') { Saved }
+            @case ('error') { Could not save }
+          }
+        </span>
+        @if (document.accessLevel === 'owner') {
+          <button type="button" class="primary" (click)="shareOpen.set(true)">Share</button>
+        }
+      </div>
+    </header>
+
+    @if (document.accessLevel === 'view') {
+      <p class="view-only-banner">View only — you don't have edit access to this document.</p>
+    }
+
+    <div class="editor-body">
+      <app-rich-text-editor formControlName="content" />
+    </div>
+  </div>
+
+  @if (shareOpen()) {
+    <app-share-dialog
+      [documentId]="document.id"
+      [shares]="document.shares ?? []"
+      (closed)="shareOpen.set(false)"
+      (sharesChanged)="onSharesChanged($event)"
+    />
+  }
+}

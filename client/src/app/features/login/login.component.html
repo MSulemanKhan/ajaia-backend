@@ -1,0 +1,46 @@
+<div class="login-page">
+  <div class="login-card">
+    <h1>Ajaia Docs</h1>
+    <p class="subtitle">A lightweight collaborative document editor</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label>
+        Username
+        <input type="text" formControlName="username" autocomplete="username" />
+      </label>
+
+      @if (mode() === 'register') {
+        <label>
+          Display name <span class="optional">(optional)</span>
+          <input type="text" formControlName="displayName" autocomplete="name" />
+        </label>
+      }
+
+      <label>
+        Password
+        <input type="password" formControlName="password" autocomplete="current-password" />
+      </label>
+
+      @if (error()) {
+        <p class="error">{{ error() }}</p>
+      }
+
+      <button type="submit" class="primary" [disabled]="loading()">
+        {{ mode() === 'login' ? 'Sign in' : 'Create account' }}
+      </button>
+    </form>
+
+    <button type="button" class="link-btn" (click)="toggleMode()">
+      {{ mode() === 'login' ? "Need an account? Register" : 'Already have an account? Sign in' }}
+    </button>
+
+    <div class="demo-accounts">
+      <p>Try it instantly with a seeded demo account:</p>
+      <div class="demo-buttons">
+        <button type="button" (click)="quickLogin('demo1')" [disabled]="loading()">Log in as demo1</button>
+        <button type="button" (click)="quickLogin('demo2')" [disabled]="loading()">Log in as demo2</button>
+      </div>
+      <p class="hint">Share a document from one to the other to see the sharing flow in action.</p>
+    </div>
+  </div>
+</div>

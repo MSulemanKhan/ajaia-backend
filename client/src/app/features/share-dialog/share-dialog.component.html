@@ -1,0 +1,48 @@
+<div class="backdrop" (click)="close()">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <div class="dialog-header">
+      <h2>Share document</h2>
+      <button type="button" class="icon-btn" (click)="close()" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="share-form">
+      @if (users().length === 0) {
+        <p class="hint">No other users exist yet — register a second account to test sharing.</p>
+      } @else {
+        <select [ngModel]="selectedUsername()" (ngModelChange)="selectedUsername.set($event)">
+          @for (user of users(); track user.id) {
+            <option [value]="user.username">{{ user.displayName }} ({{ user.username }})</option>
+          }
+        </select>
+
+        <select [ngModel]="permission()" (ngModelChange)="permission.set($event)">
+          <option value="edit">Can edit</option>
+          <option value="view">Can view</option>
+        </select>
+
+        <button type="button" class="primary" [disabled]="submitting()" (click)="share()">Share</button>
+      }
+    </div>
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <div class="share-list">
+      <h3>People with access</h3>
+      @if (localShares().length === 0) {
+        <p class="hint">Only you have access to this document.</p>
+      } @else {
+        <ul>
+          @for (entry of localShares(); track entry.id) {
+            <li>
+              <span>{{ entry.displayName }} ({{ entry.username }})</span>
+              <span class="badge">{{ entry.permission === 'edit' ? 'Can edit' : 'Can view' }}</span>
+              <button type="button" class="link-btn" (click)="revoke(entry.id)">Revoke</button>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</div>

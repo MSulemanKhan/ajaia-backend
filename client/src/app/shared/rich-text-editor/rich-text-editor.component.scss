@@ -1,0 +1,82 @@
+// encapsulation is None on this component (content is injected via raw innerHTML, so it
+// never gets Angular's scoping attribute) — nest everything under :host to avoid leaking
+// these common tag/class selectors onto the rest of the app.
+:host {
+  display: block;
+  border: 1px solid #d7dbe0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 8px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d7dbe0;
+    flex-wrap: wrap;
+  }
+
+  .tb-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #333;
+
+    &:hover:not(:disabled) {
+      background: #e9ebee;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  .tb-divider {
+    width: 1px;
+    height: 22px;
+    background: #d7dbe0;
+    margin: 0 4px;
+  }
+
+  .editor-surface {
+    min-height: 320px;
+    padding: 20px 24px;
+    outline: none;
+    line-height: 1.6;
+    font-size: 1rem;
+    color: #1f2328;
+
+    &.disabled {
+      background: #fafafa;
+      color: #666;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin: 0.6em 0 0.3em;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin: 0.6em 0 0.3em;
+    }
+
+    p {
+      margin: 0 0 0.6em;
+    }
+
+    ul,
+    ol {
+      margin: 0 0 0.6em;
+      padding-left: 1.5em;
+    }
+  }
+}
