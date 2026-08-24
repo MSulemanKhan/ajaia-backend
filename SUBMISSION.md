@@ -1,70 +1,58 @@
 # Submission
 
-## Live product
+## Live app
 
 https://ajaia-backend-qoc6.onrender.com/
 
-Free-tier Render service — the first request after a period of inactivity can take
-30-60 seconds to wake up.
+This runs on Render's free plan. If it hasn't been used in a while, the first load can take
+up to a minute while it wakes back up.
 
-## Demo accounts
+## Test accounts
 
-| Username | Password    |
-|----------|-------------|
+| Username | Password |
+|----------|----------|
 | `demo1`  | `password123` |
 | `demo2`  | `password123` |
 
-Both are seeded automatically on first boot. Log in as `demo1`, create/share a document with
-`demo2`, then log in as `demo2` (or use the one-click "Log in as demo1/demo2" buttons on the
-login screen) to see the sharing flow from both sides.
+Both already exist — no need to sign up. Log in as `demo1`, create a document, and share it
+with `demo2`. Then log in as `demo2` (or just use the one-click "Log in as demo1/demo2"
+buttons on the login page) to see it appear under "Shared with me."
 
-## What's included in this folder
+## What's in this folder
 
-- `src/`, `server.js`, `package.json` — the Express backend (auth, documents, sharing,
-  upload, static-serving of the built frontend).
-- `client/` — the Angular frontend source.
-- `tests/` — Jest + Supertest backend test suite (`npm test`).
-- `README.md` — setup/run instructions.
-- `ARCHITECTURE.md` — priorities, data model, API surface, and the reasoning behind the main
-  tradeoffs.
-- `AI_WORKFLOW.md` — how AI tools were used, what was rejected/changed, how correctness was
-  verified.
-- `WALKTHROUGH_VIDEO.txt` — the recorded walkthrough link.
+- `source-code/` — the whole project: backend, frontend, and tests.
+- `README.md` — how to run it.
+- `ARCHITECTURE.md` — how it's built, and why.
+- `AI_WORKFLOW.md` — how I used AI while building this.
+- `WALKTHROUGH_VIDEO.txt` — link to the walkthrough video.
+- `screenshots/` — a few screenshots of the app in use.
 
 ## What's working
 
-- Create, rename, edit, and reopen documents; content autosaves with a visible save-state
-  indicator.
-- Rich text: bold, italic, underline, headings (H1/H2), bulleted and numbered lists.
-- File upload: `.txt` and `.md` import directly into a new editable document (other types are
-  rejected with a clear message); markdown is converted to HTML.
-- Sharing: owner can grant "can edit" or "can view" access to another user and revoke it
-  later; dashboard clearly separates "My documents" from "Shared with me" (with owner name
-  and permission level shown for shared docs).
-- Real auth (bcrypt + JWT) with two seeded demo accounts for zero-setup review.
-- Access control is enforced server-side and covered by automated tests, not just hidden in
-  the UI.
+- Create, rename, edit, and reopen documents.
+- Formatting: bold, italic, underline, headings, bullet and numbered lists.
+- Autosave.
+- Upload a `.txt` or `.md` file to create a new document from it.
+- Share a document as "can edit" or "can view," and remove access later.
+- Copy a link to a document.
+- Real login (hashed passwords, real sessions), plus two ready-made test accounts.
+- Access rules are enforced on the server and covered by automated tests, not just hidden in
+  the interface.
 
-## What's incomplete / known limitations
+## What's not finished
 
-- **Persistence is a JSON file**, not a database — chosen to avoid native-module build risk
-  and extra infrastructure for this scope. Render's free tier has no persistent disk, so data
-  resets on redeploy *and* on spin-down/wake from inactivity (the two demo accounts always
-  come back since they're re-seeded on boot; anything else you create may not survive an idle
-  period between review sessions).
-- **No document deletion in the UI** — the API supports it (`DELETE /api/documents/:id`), it's
-  just not wired into the dashboard yet.
-- **No real-time co-editing** — single-editor-at-a-time with autosave, no live cursors or
-  conflict resolution if two people edit the same document at once (last write wins, silently).
-- **No frontend automated tests** — deprioritized in favor of backend access-control tests
-  given the time budget (see `ARCHITECTURE.md` for the reasoning).
+- **Storage is a plain file, not a real database.** Render's free plan can wipe it when the
+  app restarts or goes to sleep from being unused. The two test accounts always come back;
+  other documents you create might not survive between sessions.
+- No delete/rename button in the document list yet (works on the backend, just not wired up
+  to a button).
+- No real-time co-editing — one person edits at a time, with autosave, no live cursors.
+- No frontend tests — I put my testing time into the backend sharing rules instead.
 
-## What I'd build next with another 2-4 hours
+## What I'd build next with more time
 
-1. Move persistence to Render's free Postgres so data survives spin-down.
-2. Wire up document delete/rename actions directly from the dashboard.
-3. Add a version counter and a "this document changed, reload?" prompt for basic conflict
-   awareness between two editors.
-4. Add frontend component tests for the rich-text editor and share dialog.
-5. Server-side HTML sanitization (e.g. `sanitize-html`) as defense-in-depth alongside the
-   client-side `DomSanitizer` pass already in place.
+1. Move storage to a real database so nothing gets lost between sessions.
+2. Add delete/rename to the document list.
+3. Add a basic warning if two people edit the same document at the same time.
+4. Add frontend tests.
+5. Add extra safety checks on the server for content people paste into documents.

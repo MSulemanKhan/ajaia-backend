@@ -1,78 +1,74 @@
 # Ajaia Docs
 
-A lightweight, Google-Docs-inspired collaborative document editor: create and edit rich-text
-documents, import `.txt`/`.md` files, and share documents with other users. Built as a single
-Node/Express backend that also serves a small Angular frontend.
+A simple collaborative document editor, like a small version of Google Docs. You can create
+documents, format text, upload files, and share documents with other people.
 
-**Live demo:** https://ajaia-backend-qoc6.onrender.com/
-**Demo accounts** (seeded automatically on first boot): `demo1` / `password123` and
-`demo2` / `password123`. Log in as one and share a document with the other to see the
-sharing flow, or use the "Log in as demo1/demo2" buttons on the login screen.
+**Live app:** https://ajaia-backend-qoc6.onrender.com/
 
-> Render's free tier spins the service down after inactivity and wakes it on the next
-> request — the first load after idling can take 30-60 seconds.
+**Test accounts** (already created, no sign-up needed):
+- `demo1` / `password123`
+- `demo2` / `password123`
 
-## Stack
+Log in as `demo1`, create a document, share it with `demo2`, then log in as `demo2` to see it.
+There are one-click "Log in as demo1/demo2" buttons on the login page too.
 
-- **Backend:** Node.js + Express 5, JSON-file persistence (no database server to provision),
-  JWT auth, `multer` for uploads.
-- **Frontend:** Angular 21 (standalone components, signals, zoneless change detection), a
-  hand-rolled rich-text editor (no third-party editor library — see `ARCHITECTURE.md`).
-- **Tests:** Jest + Supertest against the backend's access-control logic.
-- **Deployment:** one Render web service. Express serves the built Angular app as static
-  files and the API under `/api/*` — no separate frontend host, no CORS in production.
+> This runs on Render's free plan. If the app hasn't been used in a while, it goes to sleep,
+> and the first request after that can take 30-60 seconds to load.
 
-## Project layout
+## What it's built with
+
+- **Backend:** Node.js + Express, a JSON file for storage, JWT for login sessions.
+- **Frontend:** Angular.
+- **Tests:** Jest + Supertest.
+- Everything runs from one Render service — the backend also serves the frontend files, so
+  there's only one URL for the whole app.
+
+## Project folders
 
 ```
 test-backend/
-  src/            Express app: routes, auth middleware, JSON data store
-  tests/          Jest + Supertest tests
-  client/         Angular app (source of the frontend)
-  data/           runtime JSON data file (git-ignored, created on first run)
-  server.js       bootstraps the Express app
+  src/            backend code: routes, login/auth, data storage
+  tests/          backend tests
+  client/         frontend code (Angular)
+  data/           where documents get saved (created automatically, not in git)
+  server.js       starts the backend
 ```
 
-## Running locally
+## Running it on your own computer
 
-Requires Node 18+.
+You need Node 18 or newer.
 
-**1. Install dependencies (backend + frontend):**
+**1. Install everything:**
 
 ```bash
 npm install
 cd client && npm install && cd ..
 ```
 
-**2. Run the frontend dev server (hot reload):**
+**2. Run the frontend:**
 
 ```bash
 cd client
 npm start
 ```
 
-Open http://localhost:4200. By default `client/proxy.conf.json` proxies `/api` requests to
-the live Render deployment (`https://ajaia-backend-qoc6.onrender.com`), so this alone is
-enough to work on the frontend — no local backend required.
+Open http://localhost:4200. By default this talks to the live backend on Render
+(`client/proxy.conf.json`), so you don't need to run a backend yourself just to work on the
+frontend.
 
-To run against a local backend instead (e.g. while changing API routes), start it in a
-second terminal and point the proxy at it:
+If you want to test backend changes, run the backend locally too, in a second terminal:
 
 ```bash
-# terminal 1 — backend, http://localhost:3000
 npm run dev
 ```
 
-```bash
-# client/proxy.conf.json — change target back to:
-# "target": "http://localhost:3000"
-```
+and change the target in `client/proxy.conf.json` back to `http://localhost:3000`.
 
-**3. Or run the production build as a single service** (this is what Render runs):
+**3. Or run it the same way Render does (one server for everything):**
 
 ```bash
-npm run build   # builds client/dist/client/browser
-npm start       # Express serves the built frontend + API on http://localhost:3000
+npm run build   # builds the frontend into client/dist/client/browser
+npm start       # Express serves both the frontend and the API on http://localhost:3000
 ```
 
 ## Running the tests
@@ -81,35 +77,30 @@ npm start       # Express serves the built frontend + API on http://localhost:30
 npm test
 ```
 
-Covers: registration/login, wrong-password rejection, and the sharing access-control logic
-(a non-owner/non-shared user is blocked from a document, gains access once shared, and
-view-only shares can't edit or manage sharing).
+This checks registration, login, and the sharing rules — for example, that someone can't open
+a document unless they own it or it's been shared with them.
 
-## Features
+## What it can do
 
-- **Documents:** create, rename, edit, and reopen. Content autosaves ~800ms after you stop
-  typing, with a save-state indicator; there's no separate "Save" button to remember to click.
-- **Rich text:** bold, italic, underline, H1/H2/paragraph, bulleted and numbered lists.
-- **File upload:** import a `.txt` or `.md` file (max 1MB) directly into a new document.
-  Other file types are rejected with a clear error message. Markdown is converted to HTML;
-  plain text is wrapped into paragraphs.
-- **Sharing:** the owner can grant another user "can edit" or "can view" access from the
-  Share dialog, and revoke it later. The dashboard visibly separates "My documents" from
-  "Shared with me" (with the sharer's name and your permission level shown).
-- **Auth:** real registration/login (bcrypt-hashed passwords, JWT sessions), plus two seeded
-  demo accounts so reviewers don't have to register to test sharing.
+- Create, rename, edit, and reopen documents.
+- Format text: bold, italic, underline, headings, bullet and numbered lists.
+- Autosave — no save button to remember, it saves about a second after you stop typing.
+- Upload a `.txt` or `.md` file and it turns into a new document.
+- Share a document with another user, as "can edit" or "can view," and remove access later.
+- Copy a link to a document to send to someone.
+- Real login (passwords are hashed, sessions use tokens), plus two ready-made test accounts.
 
-## Known limitations (deliberate scope cuts)
+## Things that aren't finished (on purpose, to fit the time I had)
 
-- **Persistence is a JSON file, not a database.** It's simple, has zero setup, and needs no
-  paid add-on — but Render's free tier has no persistent disk, so the file resets whenever
-  the service redeploys **or** spins down from inactivity and wakes back up. The two demo
-  accounts always come back (they're re-seeded on boot); anything else you create can be
-  lost between sessions. See `ARCHITECTURE.md` for what a production version would use
-  instead.
-- **No live collaboration** (no real-time co-editing/cursors) — documents are single-editor-
-  at-a-time with autosave, not a CRDT-backed multiplayer editor.
-- **No document deletion UI** (the API route exists; the dashboard doesn't expose it yet).
-- Frontend has no automated tests (see `ARCHITECTURE.md` for why this was the cut point).
+- **Storage is a plain JSON file, not a real database.** This keeps things simple with nothing
+  extra to set up, but Render's free plan can wipe this file when the app restarts or goes to
+  sleep from being unused. The two test accounts always come back since they're recreated on
+  startup; anything else you create might not survive between sessions.
+- No real-time co-editing (like Google Docs showing someone else typing live) — one person
+  edits at a time, with autosave.
+- No delete button in the document list yet (the backend supports deleting, it's just not
+  connected to a button).
+- No frontend tests — I put my testing time into the backend sharing rules instead, since
+  that's the part most likely to have a real bug.
 
-See `SUBMISSION.md` for the full list of what's working vs. what's next.
+More on why I made these choices is in `ARCHITECTURE.md`.
