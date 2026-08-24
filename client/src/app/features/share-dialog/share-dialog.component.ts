@@ -1,4 +1,4 @@
-import { Component, OnInit, input, output, signal } from '@angular/core';
+import { Component, OnInit, computed, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DocumentService } from '../../core/services/document.service';
 import { UserService } from '../../core/services/user.service';
@@ -23,6 +23,9 @@ export class ShareDialogComponent implements OnInit {
   readonly permission = signal<Permission>('edit');
   readonly submitting = signal(false);
   readonly error = signal('');
+  readonly linkCopied = signal(false);
+
+  readonly documentLink = computed(() => `${location.origin}/documents/${this.documentId()}`);
 
   constructor(private documentService: DocumentService, private userService: UserService) {}
 
@@ -60,6 +63,28 @@ export class ShareDialogComponent implements OnInit {
       this.sharesChanged.emit(shares);
     } catch {
       this.error.set('Could not revoke access.');
+    }
+  }
+
+  async copyLink(): Promise<void> {
+    const link = this.documentLink();
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(link);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = link;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+      this.linkCopied.set(true);
+      setTimeout(() => this.linkCopied.set(false), 2000);
+    } catch {
+      this.error.set('Could not copy the link — you can select and copy it manually.');
     }
   }
 
